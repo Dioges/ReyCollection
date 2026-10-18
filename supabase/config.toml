@@ -1,0 +1,4 @@
+project_id = "rey-collection"
+
+[functions.igdb]
+verify_jwt = true
