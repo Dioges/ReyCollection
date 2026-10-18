@@ -1,8 +1,8 @@
-import { corsHeaders } from 'npm:@supabase/supabase-js@^2/cors';
+import { withSupabase } from 'npm:@supabase/server@1';
 
 const json = (data: unknown, status = 200) => new Response(JSON.stringify(data), {
   status,
-  headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+  headers: { 'Content-Type': 'application/json' },
 });
 
 let accessToken = '';
@@ -90,8 +90,7 @@ async function searchGames(query: string, platformId = '', genreId = '') {
   }));
 }
 
-Deno.serve(async (request) => {
-  if (request.method === 'OPTIONS') return new Response('ok', { headers: corsHeaders });
+Deno.serve(withSupabase({ auth: 'user' }, async (request) => {
   if (request.method !== 'POST') return json({ error: 'Método não permitido.' }, 405);
   try {
     const body = await request.json();
@@ -105,4 +104,4 @@ Deno.serve(async (request) => {
   } catch (error) {
     return json({ error: error instanceof Error ? error.message : 'Não foi possível acessar a IGDB.' }, 502);
   }
-});
+}));
