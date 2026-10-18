@@ -34,7 +34,7 @@
         <button class="nav-link export-link" id="export-btn"><span class="nav-icon">⇩</span> Exportar coleção</button>
         <button class="nav-link import-link" id="import-btn"><span class="nav-icon">⇧</span> Importar backup</button>
         <input type="file" id="import-file" accept="application/json,.json" hidden>
-        <div class="profile"><div class="avatar">R</div><div><strong>Minha coleção</strong><small>Seu espaço gamer</small></div><span class="profile-dots">•••</span></div>
+        <button class="profile account-button" id="account-button" type="button" aria-haspopup="dialog"><span class="avatar" id="account-avatar">R</span><span class="account-copy"><strong id="account-name">Salvar coleção</strong><small id="account-status">Vincule Google ou Apple</small></span><span class="profile-dots" aria-hidden="true">↗</span></button>
       </div>
     </aside>
 
@@ -86,6 +86,14 @@
     </main>
   </div>
   <div class="sidebar-scrim" id="sidebar-scrim"></div>
+
+  <dialog class="account-dialog" id="account-dialog" aria-labelledby="account-dialog-title">
+    <div class="account-dialog-head"><div><p class="eyebrow">SUA CONTA</p><h2 id="account-dialog-title">Acesse sua coleção<span class="heading-dot">.</span></h2></div><button type="button" class="close-button" id="account-dialog-close" aria-label="Fechar">×</button></div>
+    <p class="account-dialog-copy">Vincule sua coleção atual a uma conta para acessá-la em outros dispositivos. Se já possui uma conta, entre nela e seus jogos serão combinados.</p>
+    <div class="account-provider-group"><strong>Vincular esta coleção</strong><button type="button" class="provider-button" data-auth-action="link" data-provider="google"><span class="provider-mark google-mark">G</span> Continuar com Google</button><button type="button" class="provider-button" data-auth-action="link" data-provider="apple"><span class="provider-mark apple-mark">A</span> Continuar com Apple</button></div>
+    <div class="account-provider-group existing-account"><strong>Já tem uma conta?</strong><button type="button" class="provider-button" data-auth-action="signin" data-provider="google"><span class="provider-mark google-mark">G</span> Entrar com Google</button><button type="button" class="provider-button" data-auth-action="signin" data-provider="apple"><span class="provider-mark apple-mark">A</span> Entrar com Apple</button></div>
+    <p class="account-auth-status" id="account-auth-status" aria-live="polite"></p>
+  </dialog>
 
   <dialog class="game-dialog" id="game-dialog">
     <form id="game-form">

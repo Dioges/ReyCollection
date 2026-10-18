@@ -10,17 +10,22 @@ Aplicação web para organizar uma coleção pessoal de jogos. A interface é es
 - Lista de desejos, filtros da coleção, modo escuro e layout adaptável a celular.
 - Backup em JSON para exportar e importar a coleção.
 - Banco Postgres no Supabase, com isolamento das coleções por sessão e políticas RLS.
+- Login por Google ou Apple para acessar a mesma coleção em outros dispositivos.
 
 ## Configurar o Supabase
 
 1. Crie um projeto no [Supabase](https://supabase.com/dashboard).
 2. No SQL Editor do projeto, execute o conteúdo de `supabase/schema.sql` para criar a tabela e as políticas de segurança.
-3. Em **Authentication > Sign In / Providers**, habilite **Allow anonymous sign-ins**. A aplicação cria uma sessão anônima para separar os dados de cada navegador.
+3. Em **Authentication > Sign In / Providers**, habilite **Allow anonymous sign-ins** e configure os provedores Google e/ou Apple. A aplicação usa uma sessão anônima até a pessoa vincular uma conta.
 4. Em **Project Settings > API**, copie a URL do projeto e a chave **publishable** (ou a chave legada `anon`). Preencha esses valores em `supabase-config.js`.
+5. Em **Authentication > URL Configuration**, defina a URL do GitHub Pages como **Site URL** e adicione a URL publicada à lista de redirecionamentos permitidos. Para este projeto, use `https://dioges.github.io/ReyCollection/`. Adicione também `http://127.0.0.1:3000/` para desenvolvimento local.
+6. Ative o vínculo manual de identidades em **Authentication > Settings** para que uma coleção anônima possa ser associada a uma conta Google ou Apple.
 
 A chave publishable/anon pode ficar no código do site. Nunca coloque uma chave `service_role` nesse arquivo. O acesso aos jogos é restringido pelas políticas RLS da tabela.
 
-Cada navegador recebe uma sessão anônima persistida para recuperar sua coleção em visitas posteriores. Como não há cadastro de conta, uma sessão anônima não pode ser recuperada em outro navegador ou dispositivo. Use **Exportar coleção** antes de trocar de dispositivo e importe o backup no outro navegador.
+Cada navegador recebe uma sessão anônima persistida. Use **Salvar coleção** no menu lateral para vincular essa coleção ao Google ou à Apple e recuperá-la em outros dispositivos. Se já possuir uma conta, use a opção de entrar: os jogos locais e os da conta serão combinados por identificador.
+
+Para configurar o Google, crie um cliente OAuth do tipo Web no Google Auth Platform e cadastre o ID e o segredo do cliente em **Authentication > Sign In / Providers > Google** no Supabase. Use `https://ckdionqrxycnxobbshmj.supabase.co/auth/v1/callback` como URI de redirecionamento autorizado no Google. Para a Apple, configure o provedor em **Authentication > Sign In / Providers > Apple** com um Services ID, Team ID, Key ID e a chave privada `.p8` da conta Apple Developer; use o mesmo callback como Return URL do Services ID. O segredo OAuth da Apple precisa ser renovado a cada seis meses; mantenha um lembrete para essa rotação.
 
 ## Publicar no GitHub Pages
 
