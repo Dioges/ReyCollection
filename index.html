@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#11151c">
+  <meta name="description" content="Organize, acompanhe e aproveite sua coleção de jogos.">
+  <title>Rey Collection — sua coleção de jogos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <a class="brand" href="#inicio" aria-label="Rey Collection, início">
+        <span class="brand-mark">R<span>✳</span></span>
+        <span class="brand-copy"><strong>rey<span>.</span></strong><small>GAME COLLECTION</small></span>
+      </a>
+
+      <div class="side-label">MENU</div>
+      <nav class="main-nav" aria-label="Navegação principal">
+        <a class="nav-link active" href="#inicio" data-view="inicio"><span class="nav-icon">⌂</span> Visão geral</a>
+        <a class="nav-link" href="#colecao" data-view="colecao"><span class="nav-icon">▦</span> Minha coleção <span class="nav-count" id="nav-count">0</span></a>
+        <a class="nav-link" href="#wishlist" data-view="wishlist"><span class="nav-icon">♡</span> Lista de desejos</a>
+      </nav>
+
+      <div class="side-label platform-label">PLATAFORMAS <button class="text-button" id="clear-platform" title="Limpar filtro">Limpar</button></div>
+      <div class="platform-list" id="platform-list"></div>
+
+      <div class="sidebar-bottom">
+        <div class="tip-card"><span class="tip-star">✳</span><strong>Uma coleção com história.</strong><p>Guarde cada jogo, cada memória e cada conquista em um só lugar.</p><span class="tip-decoration">✳</span></div>
+        <button class="nav-link export-link" id="export-btn"><span class="nav-icon">⇩</span> Exportar coleção</button>
+        <button class="nav-link import-link" id="import-btn"><span class="nav-icon">⇧</span> Importar backup</button>
+        <input type="file" id="import-file" accept="application/json,.json" hidden>
+        <div class="profile"><div class="avatar">R</div><div><strong>Minha coleção</strong><small>Seu espaço gamer</small></div><span class="profile-dots">•••</span></div>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div class="breadcrumbs"><span>Minha biblioteca</span><span class="crumb-slash">/</span><strong id="breadcrumb-current">Visão geral</strong></div>
+        <div class="top-actions">
+          <button class="icon-button menu-toggle" id="menu-toggle" aria-label="Abrir menu">☰</button>
+          <button class="icon-button" id="theme-toggle" title="Alternar tema" aria-label="Alternar tema">◐</button>
+          <span class="top-divider"></span>
+          <button class="add-button" id="add-game-top"><span>＋</span> Adicionar jogo</button>
+        </div>
+      </header>
+
+      <div class="page-wrap">
+        <section class="view-section" id="view-inicio">
+          <div class="welcome-row"><div><p class="eyebrow"><span class="live-dot"></span> SUA BIBLIOTECA, DO SEU JEITO</p><h1>Olá, colecionador<span class="wave">✳</span></h1><p class="welcome-sub">Cada jogo tem uma história. Este é o lugar para guardar a sua.</p></div><button class="add-button add-mobile" id="add-game-mobile"><span>＋</span> Adicionar jogo</button></div>
+          <div class="stats-grid">
+            <article class="stat-card stat-total"><div class="stat-top"><span>Total de jogos</span><span class="stat-icon">▦</span></div><div class="stat-value" id="stat-total">0</div><div class="stat-foot"><span class="stat-note">na sua coleção</span><span class="stat-accent">✳</span></div></article>
+            <article class="stat-card"><div class="stat-top"><span>Jogos finalizados</span><span class="stat-icon green">✓</span></div><div class="stat-value" id="stat-finished">0</div><div class="stat-foot"><span class="stat-note">histórias concluídas</span><div class="mini-progress"><span id="finished-progress"></span></div></div></article>
+            <article class="stat-card"><div class="stat-top"><span>Para jogar</span><span class="stat-icon orange">◷</span></div><div class="stat-value" id="stat-playing">0</div><div class="stat-foot"><span class="stat-note">aventuras esperando</span><span class="foot-arrow">↗</span></div></article>
+            <article class="stat-card"><div class="stat-top"><span>Valor investido</span><span class="stat-icon purple">R$</span></div><div class="stat-value stat-currency" id="stat-value">R$ 0</div><div class="stat-foot"><span class="stat-note">em jogos físicos e digitais</span><span class="foot-arrow">↗</span></div></article>
+          </div>
+
+          <section class="collection-section">
+            <div class="section-heading"><div><p class="eyebrow">FEITO PARA VOCÊ</p><h2>Adicionados recentemente <span class="heading-dot">.</span></h2></div><button class="see-all" data-go="colecao">Ver coleção completa <span>→</span></button></div>
+            <div class="game-grid" id="recent-grid"></div>
+          </section>
+
+          <section class="bottom-grid">
+            <article class="panel platform-panel"><div class="panel-heading"><div><p class="eyebrow">SUA PRATELEIRA</p><h2>Por plataforma</h2></div><span class="panel-icon">▤</span></div><div id="platform-summary" class="platform-summary"></div></article>
+            <article class="panel wishlist-panel"><div class="panel-heading"><div><p class="eyebrow">NO RADAR</p><h2>Lista de desejos</h2></div><button class="see-all small-see" data-go="wishlist">Ver lista <span>→</span></button></div><div id="wishlist-preview"></div></article>
+          </section>
+        </section>
+
+        <section class="view-section hidden" id="view-colecao">
+          <div class="collection-title"><div><p class="eyebrow">SEU ACERVO PESSOAL</p><h1>Minha coleção<span class="heading-dot">.</span></h1><p class="welcome-sub">Todos os seus jogos, organizados em um só lugar.</p></div><div class="collection-total"><strong id="collection-count">0</strong><span id="collection-count-label">jogos exibidos</span></div></div>
+          <div class="toolbar"><label class="search-box"><span>⌕</span><input id="search-input" type="search" placeholder="Buscar por título, gênero ou plataforma..." autocomplete="off"><kbd>⌘ K</kbd></label><div class="toolbar-controls"><select id="collection-platform-filter" aria-label="Filtrar jogos da coleção por plataforma"><option value="">Todas as plataformas</option></select><select id="collection-genre-filter" aria-label="Filtrar jogos da coleção por gênero"><option value="">Todos os gêneros</option></select><select id="status-filter" aria-label="Filtrar por status"><option value="">Todos os status</option><option value="Quero jogar">Quero jogar</option><option value="Jogando">Jogando</option><option value="Finalizado">Finalizado</option><option value="Pausado">Pausado</option></select><select id="sort-select" aria-label="Ordenar jogos"><option value="recent">Mais recentes</option><option value="title">Título A–Z</option><option value="rating">Melhor avaliados</option><option value="value">Maior valor</option></select><button class="view-toggle" id="view-toggle" title="Alternar visualização" aria-label="Alternar visualização">☷</button></div></div>
+          <div class="filter-chips" id="filter-chips"></div>
+          <div class="game-grid collection-grid" id="collection-grid"></div>
+        </section>
+
+        <section class="view-section hidden" id="view-wishlist">
+          <div class="collection-title"><div><p class="eyebrow">PRÓXIMAS AVENTURAS</p><h1>Lista de desejos<span class="heading-dot">.</span></h1><p class="welcome-sub">Jogos que já estão na sua mira.</p></div><button class="add-button" id="add-wishlist"><span>＋</span> Adicionar desejo</button></div>
+          <div class="game-grid wishlist-grid" id="wishlist-grid"></div>
+        </section>
+      </div>
+      <footer class="footer"><span>REY COLLECTION <span class="footer-dot">✳</span></span><span>Feito para quem ama jogar.</span><span id="save-status">Conectando ao banco de dados…</span></footer>
+    </main>
+  </div>
+  <div class="sidebar-scrim" id="sidebar-scrim"></div>
+
+  <dialog class="game-dialog" id="game-dialog">
+    <form id="game-form">
+      <div class="dialog-head"><div><p class="eyebrow" id="dialog-eyebrow">SUA PRÓXIMA AVENTURA</p><h2 id="dialog-title">Adicionar jogo<span class="heading-dot">.</span></h2></div><button type="button" class="close-button" id="close-dialog" aria-label="Fechar">×</button></div>
+      <input type="hidden" id="game-id">
+      <section class="igdb-search-step" id="igdb-search-step">
+        <p class="search-intro">Encontre um jogo na base da IGDB e aproveite os dados para preencher seu cadastro.</p>
+        <div class="igdb-filters">
+          <label>Plataforma<select id="igdb-platform-filter"><option value="">Todas as plataformas</option></select></label>
+          <label>Gênero<select id="igdb-genre-filter"><option value="">Todos os gêneros</option></select></label>
+        </div>
+        <p class="igdb-filter-status" id="igdb-filter-status" aria-live="polite"></p>
+        <div class="igdb-search-row"><input id="igdb-search-input" type="search" maxlength="100" placeholder="Digite o nome do jogo..." autocomplete="off"><button type="button" class="add-button" id="igdb-search-submit">Buscar</button></div>
+        <p class="igdb-search-status" id="igdb-search-status" aria-live="polite">A pesquisa usa o catálogo da IGDB.</p>
+        <div class="igdb-results" id="igdb-results"></div>
+        <button type="button" class="manual-entry-button" id="manual-entry-button">Prefiro preencher manualmente →</button>
+      </section>
+      <div class="form-grid hidden" id="manual-game-fields">
+        <label class="field full">Título do jogo *<input id="game-title" required maxlength="80" placeholder="Ex.: The Legend of Zelda: Tears of the Kingdom"></label>
+        <label class="field">Plataforma *<select id="game-platform" required><option value="">Selecione...</option><option>PlayStation 5</option><option>PlayStation 4</option><option>Xbox Series X|S</option><option>Xbox One</option><option>Nintendo Switch</option><option>PC</option><option>PlayStation 3</option><option>Xbox 360</option><option>Outro</option></select></label>
+        <label class="field">Gênero<input id="game-genre" maxlength="40" placeholder="Ex.: Aventura, RPG"></label>
+        <label class="field">Status<select id="game-status"><option>Quero jogar</option><option>Jogando</option><option>Finalizado</option><option>Pausado</option></select></label>
+        <label class="field">Nota pessoal (0–10)<input id="game-rating" type="number" min="0" max="10" step="0.5" placeholder="—"></label>
+        <label class="field">Valor pago (R$)<input id="game-price" type="number" min="0" step="0.01" placeholder="0,00"></label>
+        <label class="field">Data de aquisição<input id="game-date" type="date"></label>
+        <label class="field full">Observações<textarea id="game-notes" rows="3" maxlength="500" placeholder="Edição, condição, onde comprou ou uma memória especial..."></textarea></label>
+        <label class="check-field full"><input id="game-wishlist" type="checkbox"><span class="checkmark"></span> Adicionar à lista de desejos</label>
+      </div>
+      <div class="dialog-actions hidden" id="manual-dialog-actions"><button type="button" class="cancel-button" id="cancel-dialog">Cancelar</button><button type="submit" class="add-button"><span>＋</span> <span id="submit-label">Adicionar à coleção</span></button></div>
+    </form>
+  </dialog>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
